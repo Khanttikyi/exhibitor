@@ -44,9 +44,3 @@ To build the project for production:
 ```sh
 ng build --prod
 ```
-
-## Contributing
-Feel free to fork this repository and submit pull requests with enhancements.
-
-## License
-This project is licensed under the MIT License.
