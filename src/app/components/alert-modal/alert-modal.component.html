@@ -1,0 +1,21 @@
+<div class="modal-body text-center" *ngIf="type === 'success-alert'">
+    <div class="p-5" id="modal-data">
+        <label class="text-gary font-20 bold">{{title}}</label>
+        <div class="mt-3">
+            <label class="text-light-gary font-18 mb-2">Your unique code is</label>
+            <div class="code">{{code}}</div>
+        </div>
+    </div>
+    <button class="btn custom-btn bg-red w-100" (click)="saveAsImage()">Save as Image</button>
+    <button class="btn custom-btn transparent-btn w-100" (click)="closeModal()">Back to Home</button>
+</div>
+<div *ngIf="type === 'error-alert'">
+    <div class="modal-body text-center">
+        <div class="p-3">
+            <label class="text-gary font-16 bold">{{title}}</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn custom-btn bg-red w-100" (click)="closeModal()">OK</button>
+    </div>
+</div>

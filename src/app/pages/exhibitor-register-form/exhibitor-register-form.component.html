@@ -1,0 +1,139 @@
+<div class="header text-center mb-2">
+    <img src="assets/headers/reg_banner.png" alt="Registration Banner" class="img-fluid w-100 h-auto"
+        style="max-width: 100%; object-fit: contain;">
+</div>
+<app-loading-modal [progress]="progress" [isVisible]="isLoading"></app-loading-modal>
+
+<form [formGroup]="exhibitorForm" (ngSubmit)="registerExhibitor()">
+    <div class="content">
+        <label class="text-red bold font-24 mb-3">Onsite Exhibitors Registration</label>
+        <div class="row">
+            <div class="col-12">
+                <div class="card p-3">
+                    <div class="mb-3">
+                        <label class="font-16 text-light-gary pb-2">Event Selection</label>
+                        <div class="form-check custom-padding-1">
+                            <input class="form-check-input" type="radio" name="event" id="event1"
+                                formControlName="event" value="FHA-Food & Beverage">
+                            <label class="font-16 text-light-gary" for="event1">FHA-Food & Beverage</label>
+                        </div>
+                        <div class="form-check custom-padding-1">
+                            <input class="form-check-input" type="radio" name="event" id="event2"
+                                formControlName="event" value="Prowine Singapore">
+                            <label class="font-16 text-light-gary" for="event2">Prowine Singapore</label>
+                        </div>
+                        <div class="text-red font-11 error" *ngIf="isControlInvalid('event')">Please select an event</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="font-16 text-light-gary">Company</label>
+                        <p class="font-11 text-gary">
+                            If you are unable to find your company name, please approach our Exhibitor Team for
+                            assistance.
+                        </p>
+                        <ng-select [items]="companies" bindLabel="name" bindValue="id" placeholder="Please select"
+                            [ngClass]="{'is-invalid': isControlInvalid('company')}" formControlName="company"
+                            (change)="onCompanyChange($event)">
+                        </ng-select>
+                        <div class="text-red font-11 error" *ngIf="isControlInvalid('company')">Please select a company
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row mt-3" formArrayName="exhibitors">
+            <div class="col-12" *ngFor="let exhibitor of exhibitors.controls; let i = index" [formGroupName]="i">
+                <label class="font-16 text-light-gary">* All fields are mandatory.</label>
+                <div class="card mt-3">
+
+                    <div class="card-title bg-light-red py-3">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <label class="font-16 text-light-gary ps-3 mb-0 bold">Exhibitor #{{ i + 1 }}</label>
+                            </div>
+                            <div class="col-6 text-end">
+                                <label class="font-16 text-light-gary remove pe-3 mb-0"
+                                    (click)="removeExhibitor(i)">Remove</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div *ngIf="exhibitorErrors[i]" class="alert alert-danger">
+                            {{ exhibitorErrors[i] }}
+                        </div>
+                        <div class="form-container">
+                            <div class="mb-3">
+                                <label class="font-16 text-light-gary">Email Address</label>
+                                <input type="email" class="form-control" formControlName="email"
+                                    [ngClass]="{'is-invalid': isControlInvalidIndex('exhibitors', i, 'email')}">
+                                <div class="text-red font-11 error"
+                                    *ngIf="isControlInvalidIndex('exhibitors', i, 'email') && exhibitor.get('email')?.hasError('required')">
+                                    Email is required</div>
+                                <div class="text-red font-11 error"
+                                    *ngIf="isControlInvalidIndex('exhibitors', i, 'email') && exhibitor.get('email')?.hasError('email')">
+                                    Please enter a valid email address</div>
+                                <div class="text-red font-11 error"
+                                    *ngIf="isControlInvalidIndex('exhibitors', i, 'email') && exhibitor.get('email')?.hasError('startsWithCapital')&& !exhibitor.get('email')?.hasError('email')">
+                                    Email cannot start with a capital letter</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="font-16 text-light-gary">Name on Badge</label>
+                                <input type="text" class="form-control" formControlName="nameOnBadge"
+                                    [ngClass]="{'is-invalid': isControlInvalidIndex('exhibitors', i, 'nameOnBadge')}">
+                                <div class="text-red font-11 error"
+                                    *ngIf="isControlInvalidIndex('exhibitors', i, 'nameOnBadge') && exhibitor.get('nameOnBadge')?.hasError('required')">
+                                    Name on badge is required</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="font-16 text-light-gary">Job Title</label>
+                                <input type="text" class="form-control" formControlName="jobTitle"
+                                    [ngClass]="{'is-invalid': isControlInvalidIndex('exhibitors', i, 'jobTitle')}">
+                                <div class="text-red font-11 error"
+                                    *ngIf="isControlInvalidIndex('exhibitors', i, 'jobTitle') && exhibitor.get('jobTitle')?.hasError('required')">
+                                    Job title is required</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="font-16 text-light-gary">Country</label>
+                                <ng-select [items]="countries" bindLabel="name" bindValue="id"
+                                    placeholder="Please Select" formControlName="country"
+                                    [ngClass]="{'is-invalid': isControlInvalidIndex('exhibitors', i, 'country')}">
+                                </ng-select>
+                                <div class="text-red font-11 error"
+                                    *ngIf="isControlInvalidIndex('exhibitors', i, 'country') && exhibitor.get('country')?.hasError('required')">
+                                    Please select a country</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="font-16 text-light-gary">Company on Badge</label>
+                                <input type="text" class="form-control" formControlName="companyOnBadge"
+                                    [ngClass]="{'is-invalid': isControlInvalidIndex('exhibitors', i, 'companyOnBadge')}">
+                                <div class="text-red font-11 error"
+                                    *ngIf="isControlInvalidIndex('exhibitors', i, 'companyOnBadge') && exhibitor.get('companyOnBadge')?.hasError('required')">
+                                    Company on badge is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <button type="button" class="btn custom-btn transparent-btn" (click)="addExhibitor()">
+                    <span class="icon-circle">
+                        <i class="fas fa-plus" style="font-size: 10px;"></i>
+                    </span> Add Exhibitor
+                </button>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <button type="submit" class="btn custom-btn bg-red">Register</button>
+            </div>
+        </div>
+    </div>
+</form>

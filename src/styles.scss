@@ -1,1 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+body {
+    background-color: #F1F1F1 !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+.fas {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900; /* This is for solid icons */
+}
+
+.custom-padding-1 {
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    padding-left: 2rem !important;
+}
+
+.content {
+    padding: 15px;
+}
+
+.form-check-input:checked {
+    background-color: #EE4036 !important;
+    border-color: #EE4036 !important;
+}
+
+.text-red {
+    color: #EE4036;
+}
+
+.text-light-gary {
+    color: #6E6B7B;
+}
+.text-gary {
+    color: #9592a0;
+}
+
+.font-24 {
+    font-size: 24px;
+}
+.font-20 {
+    font-size: 20px;
+}
+.font-16 {
+    font-size: 16px;
+}
+.font-18 {
+    font-size: 18px;
+}
+.font-14 {
+    font-size: 14px;
+}
+
+.font-11 {
+    font-size: 11px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.custom-btn{
+    border-radius: 10px !important;
+    padding: 10px 25px !important;
+    color: #fff !important;
+    width: 100% !important;
+}
+.transparent-btn{
+    background-color: transparent !important;
+    color: #EE4036 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.bg-light-red{
+  
+    background-color: #fce8e6 !important;
+    color: #9592a0 !important;
+    .remove{
+        color: #EE4036 !important;
+        text-align: right !important;
+        text-decoration: underline !important;
+    }
+}
+.bg-red{
+    background-color: #EE4036 !important;
+    color: #fff !important;
+}
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';

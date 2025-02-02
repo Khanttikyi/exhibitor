@@ -1,0 +1,98 @@
+.scanner-container {
+    width: 350px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.qr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    /* Full viewport height */
+}
+
+.scanner-header {
+    background: #fce8e6;
+    padding: 20px;
+}
+
+.scanner-body {
+    padding: 50px;
+}
+
+.qr-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.qr-box img {
+    width: 170px;
+}
+
+.indicator {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+}
+
+.corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #EE4036;
+}
+
+.corner.tl {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+}
+
+.corner.tr {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+}
+
+.corner.bl {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+}
+
+.corner.br {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+}
+
+.custom-btn-register {
+    border-radius: 10px;
+    padding: 10px 25px;
+    color: #fff;
+    background-color: #EE4036;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    /* Adjust width to fit content */
+    min-width: 150px;
+    /* Set a minimum width */
+    text-align: center;
+    /* Center text */
+}
+
+.custom-btn-register:hover {
+    background-color: #d93b31;
+}

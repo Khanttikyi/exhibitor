@@ -1,0 +1,10 @@
+<div class="modal-backdrop" *ngIf="isVisible">
+    <div class="modal-content">
+      <div class="progress-container">
+        <p>Registration Progress: {{ progress }}%</p>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" [style.width.%]="progress"></div>
+        </div>
+      </div>
+    </div>
+  </div>

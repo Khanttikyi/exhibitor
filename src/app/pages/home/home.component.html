@@ -1,0 +1,20 @@
+<div class="content qr-container text-center">
+<div class="scanner-container">
+    <div class="scanner-header">
+        <h5 class="text-red font-24 bold">Scan QR Code</h5>
+        <p class="text-gray font-16">To Register the Exhibitor</p>
+    </div>
+    <div class="scanner-body">
+        <div class="qr-box">
+            <div class="indicator">
+                <div class="corner tl"></div>
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="corner br"></div>
+            </div>
+            <img [src]="qrCodeUrl" alt="QR Code">
+        </div>
+        <button class="custom-btn-register mt-3" (click)="registerNow()">Register Now</button>
+    </div>
+</div>
+</div>
