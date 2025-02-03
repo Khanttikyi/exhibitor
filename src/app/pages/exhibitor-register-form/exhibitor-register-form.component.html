@@ -13,12 +13,12 @@
                     <div class="mb-3">
                         <label class="font-16 text-light-gary pb-2">Event Selection</label>
                         <div class="form-check custom-padding-1">
-                            <input class="form-check-input" type="radio" name="event" id="event1"
+                            <input class="form-check-input" type="radio" name="event" id="event1" (change)="onEventChange('FHA-Food & Beverage')"
                                 formControlName="event" value="FHA-Food & Beverage">
                             <label class="font-16 text-light-gary" for="event1">FHA-Food & Beverage</label>
                         </div>
                         <div class="form-check custom-padding-1">
-                            <input class="form-check-input" type="radio" name="event" id="event2"
+                            <input class="form-check-input" type="radio" name="event" id="event2" (change)="onEventChange('Prowine Singapore')"
                                 formControlName="event" value="Prowine Singapore">
                             <label class="font-16 text-light-gary" for="event2">Prowine Singapore</label>
                         </div>

@@ -12,71 +12,65 @@ export class ExhibitorService {
     constructor(private http: HttpClient) { }
 
     getCountries(): Observable<any> {
-        return this.http.get(`${this.apiUrl}/exhibitor-company-list`);
+        return this.http.post(`${this.apiUrl}/exhibitor-company-list`, {});
     }
     getCountriesJson(): Observable<any> {
         return this.http.get(`${environment.countryJsonUrl}`);
     }
-
     registerExhibitor(exhibitorData: any): Observable<any> {
         const exhibitorValues = this.mapFormDataToApi(exhibitorData);
         console.log(exhibitorValues);
-        const requests = exhibitorValues.exhibitors.map((exhibitor: any, index: number) => {
-            if (index % 2 !== 0) {
-                return new Observable(observer => {
-                    setTimeout(() => {
-                        observer.error({
-                            success: false,
-                            message: `Error registering exhibitor`,
-                            error: { message: 'Simulated error for odd index' }
-                        });
-                    }, 2000);
-                });
-            } else {
-                return of({
-                    success: true,
-                    message: 'Exhibitor registered successfully',
-                    exhibitors: exhibitorValues.exhibitors
-                });
-            }
+        const requests = exhibitorValues.exhibitors.map((exhibitor: any) => {
+            return this.http.post(`${this.apiUrl}/add-exhibitor`, exhibitor);
         });
-    
+
         return new Observable(observer => {
             let completed = 0;
             const total = requests.length;
             const errors: any[] = [];
-    
+
             requests.reduce((promise: any, request: any, index: number) => {
                 return promise.then(() => {
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            request.toPromise().then((response: any) => {
-                                completed++;
-                                const progress = (completed / total) * 100;
-                                observer.next({
-                                    progress: progress,
-                                    currentExhibitor: completed,
-                                    totalExhibitors: total,
-                                    response: response
-                                });
-    
-                                if (completed === total) {
-                                    observer.complete();
-                                }
-                                resolve(response);
-                            }).catch((error: any) => {
-                                errors.push({ index, error });
-                              
-                                    observer.error({ errors });
-                                
-                                reject(error);
+                    return new Promise((resolve) => {
+                        request.toPromise().then((response: any) => {
+                            completed++;
+                            const progress = (completed / total) * 100;
+                            observer.next({
+                                progress: progress,
+                                currentExhibitor: completed,
+                                totalExhibitors: total,
+                                response: response,
+                                status: response.status,
+                                exhibitors: exhibitorValues.exhibitors
                             });
-                        }, 3000); // 5-second delay
+
+                            if (completed === total) {
+                                observer.complete();
+                            }
+                            resolve(response);
+                        }).catch((error: any) => {
+                            console.log(error);
+                            const errorMessage = error?.error?.message || error.message;
+                            errors.push({ index, errorMessage });
+
+                            // Log the error but do not reject the promise
+                            observer.next({
+                                progress: (completed / total) * 100,
+                                currentExhibitor: index,
+                                totalExhibitors: total,
+                                error: errorMessage,
+                                status: false,
+                                exhibitors: exhibitorValues.exhibitors
+                            });
+                            resolve(null);
+                        });
                     });
                 });
             }, Promise.resolve());
         });
     }
+
+
     testRegisterExhibitor(exhibitorData: any) {
         const exhibitorValues = this.mapFormDataToApi(exhibitorData);
         console.log(exhibitorValues);
@@ -91,7 +85,7 @@ export class ExhibitorService {
         return {
             exhibitors: formData.exhibitors.map((exhibitor: any) => ({
                 "S_added_via": "Web Form",
-                "S_company": formData.company,
+                "S_company": exhibitor.company,
                 "S_email_address": exhibitor.email,
                 "S_group_reg_id": randomLetters,
                 "S_name_on_badge": exhibitor.nameOnBadge,

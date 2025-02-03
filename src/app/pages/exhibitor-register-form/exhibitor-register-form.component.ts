@@ -40,7 +40,7 @@ export class ExhibitorRegisterFormComponent implements OnInit {
 
   createExhibitor(): FormGroup {
     return this.fb.group({
-      email: [null, [Validators.required, Validators.email,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), this.startsWithCapitalValidator()]],
+      email: [null, [Validators.required, Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), this.startsWithCapitalValidator()]],
       nameOnBadge: [null, Validators.required],
       jobTitle: [null, Validators.required],
       country: [null, Validators.required],
@@ -55,7 +55,7 @@ export class ExhibitorRegisterFormComponent implements OnInit {
     const exhibitors = this.exhibitorForm.get('exhibitors') as FormArray;
     exhibitors.removeAt(index);
   }
-  
+
   onCompanyChange(event: any) {
     console.log(event);
     if (event && event.id) {
@@ -70,12 +70,22 @@ export class ExhibitorRegisterFormComponent implements OnInit {
       this.exhibitors.clear();
     }
   }
+  onEventChange(event: any) {
+    console.log(event);
+    this.getCompanies(event);
+  }
 
 
-  getCompanies() {
-    this.exhibitorService.getCountries().subscribe(data => {
-      console.log(data);
-      this.companies = data;
+  getCompanies(eventValue: any) {
+    this.exhibitorService.getCountries().subscribe(response => {
+      console.log(response);
+      if (response.status) {
+        this.companies = response.message.filter((item: any) => item.S_event === eventValue)
+        .map((item: any) =>({
+          id: item.S_company,
+          name: item.S_company
+        }));
+      }
     });
   }
   getCountriesJson() {
@@ -101,9 +111,9 @@ export class ExhibitorRegisterFormComponent implements OnInit {
       this.exhibitorService.registerExhibitor(this.exhibitorForm.value).subscribe({
         next: (data: any) => {
           console.log('registerExhibitor', data);
-          if (data.progress) {
+          if (data.status) {
             this.progress = Math.round(data.progress);
-            const code = data.response.exhibitors.length > 0 ? data.response.exhibitors[0].S_group_reg_id : 'ABCDE';
+            const code = data.exhibitors.length > 0 ? data.exhibitors[0].S_group_reg_id : 'ABCDE';
             if (this.progress === 100) {
               setTimeout(() => {
                 this.isLoading = false;
@@ -114,14 +124,17 @@ export class ExhibitorRegisterFormComponent implements OnInit {
               }, 3000);
 
             }
+          }else{
+            this.isLoading=false;
+            this.exhibitorErrors[data.currentExhibitor] = data.error
+            console.log(this.exhibitorErrors);
+            this.cdf.detectChanges();
           }
         },
         error: (error: any) => {
           console.error('Error during registration:', error);
           this.isLoading = false;
-          this.exhibitorErrors = error.errors.map((err: any) => `Error for exhibitor #${err.index}: ${err.error.message}`);
-          console.log(this.exhibitorErrors);
-          this.cdf.detectChanges();
+         
         }
       });
     } else {
