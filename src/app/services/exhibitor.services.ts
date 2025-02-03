@@ -85,7 +85,7 @@ export class ExhibitorService {
         return {
             exhibitors: formData.exhibitors.map((exhibitor: any) => ({
                 "S_added_via": "Web Form",
-                "S_company": exhibitor.company,
+                "S_company": formData.company,
                 "S_email_address": exhibitor.email,
                 "S_group_reg_id": randomLetters,
                 "S_name_on_badge": exhibitor.nameOnBadge,
