@@ -10,11 +10,7 @@ import { ExhibitorService } from 'src/app/services/exhibitor.services';
   styleUrls: ['./exhibitor-register-form.component.scss']
 })
 export class ExhibitorRegisterFormComponent implements OnInit {
-  companies = [
-    { id: 1, name: 'Company 1' },
-    { id: 2, name: 'Company 2' },
-    { id: 3, name: 'Company 3' },
-  ];
+  companies :any[]=[];
   countries: any[] = [];
   exhibitorErrors: string[] = [];
   exhibitorForm!: FormGroup;
